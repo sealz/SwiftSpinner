@@ -9,13 +9,13 @@
 
 import UIKit
 
-public class SwiftSpinner: UIView {
+open class SwiftSpinner: UIView {
     // MARK: - Singleton
     
     //
     // Access the singleton instance
     //
-    public class var sharedInstance: SwiftSpinner {
+    open class var sharedInstance: SwiftSpinner {
         struct Singleton {
             static let instance = SwiftSpinner(frame: CGRect.zero)
         }
@@ -87,18 +87,18 @@ public class SwiftSpinner: UIView {
         isUserInteractionEnabled = true
     }
     
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         return self
     }
     
     // MARK: - Public interface
     
-    public lazy var titleLabel = UILabel()
-    public var subtitleLabel: UILabel?
+    open lazy var titleLabel = UILabel()
+    open var subtitleLabel: UILabel?
 
-    private let outerCircleDefaultColor = UIColor.white.cgColor
+    fileprivate let outerCircleDefaultColor = UIColor.white.cgColor
     fileprivate var _outerColor: UIColor?
-    public var outerColor: UIColor? {
+    open var outerColor: UIColor? {
         get { return _outerColor }
         set(newColor) {
             _outerColor = newColor
@@ -106,9 +106,9 @@ public class SwiftSpinner: UIView {
         }
     }
 
-    private let innerCircleDefaultColor = UIColor.gray.cgColor
+    fileprivate let innerCircleDefaultColor = UIColor.gray.cgColor
     fileprivate var _innerColor: UIColor?
-    public var innerColor: UIColor? {
+    open var innerColor: UIColor? {
         get { return _innerColor }
         set(newColor) {
             _innerColor = newColor
@@ -119,11 +119,11 @@ public class SwiftSpinner: UIView {
     //
     // Custom superview for the spinner
     //
-    private static weak var customSuperview: UIView? = nil
-    private static func containerView() -> UIView? {
+    fileprivate static weak var customSuperview: UIView? = nil
+    fileprivate static func containerView() -> UIView? {
         return customSuperview ?? UIApplication.shared.keyWindow
     }
-    public class func useContainerView(_ sv: UIView?) {
+    open class func useContainerView(_ sv: UIView?) {
         customSuperview = sv
     }
     
@@ -131,7 +131,7 @@ public class SwiftSpinner: UIView {
     // Show the spinner activity on screen, if visible only update the title
     //
     @discardableResult
-    public class func show(_ title: String, animated: Bool = true) -> SwiftSpinner {
+    open class func show(_ title: String, animated: Bool = true) -> SwiftSpinner {
         
         let spinner = SwiftSpinner.sharedInstance
         
@@ -173,7 +173,7 @@ public class SwiftSpinner: UIView {
     // Show the spinner activity on screen with duration, if visible only update the title
     //
     @discardableResult
-    public class func show(duration: Double, title: String, animated: Bool = true) -> SwiftSpinner {
+    open class func show(_ duration: Double, title: String, animated: Bool = true) -> SwiftSpinner {
         let spinner = SwiftSpinner.show(title, animated: animated)
         spinner.delay(duration) {
             SwiftSpinner.hide()
@@ -181,28 +181,28 @@ public class SwiftSpinner: UIView {
         return spinner
     }
     
-    private static var delayedTokens = [String]()
-    //
-    // Show the spinner activity on screen, after delay. If new call to show,
-    // showWithDelay or hide is maked before execution this call is discarded
-    //
-    @discardableResult
-    public class func show(delay: Double, title: String, animated: Bool = true) {
-        let token = UUID().uuidString
-        delayedTokens.append(token)
-        SwiftSpinner.sharedInstance.delay(delay, completion: {
-            if let index = delayedTokens.index(of: token) {
-                delayedTokens.remove(at: index)
-                _ = SwiftSpinner.show(title, animated: animated)
-            }
-        })
-    }
+    fileprivate static var delayedTokens = [String]()
+//    //
+//    // Show the spinner activity on screen, after delay. If new call to show,
+//    // showWithDelay or hide is maked before execution this call is discarded
+//    //
+//    @discardableResult
+//    open class func show(_ delay: Double, title: String, animated: Bool = true) {
+//        let token = UUID().uuidString
+//        delayedTokens.append(token)
+//        SwiftSpinner.sharedInstance.delay(delay, completion: {
+//            if let index = delayedTokens.index(of: token) {
+//                delayedTokens.remove(at: index)
+//                _ = SwiftSpinner.show(title, animated: animated)
+//            }
+//        })
+//    }
 
     ///
     /// Show the spinner with the outer circle representing progress (0 to 1)
     ///
     @discardableResult
-    public class func show(progress: Double, title: String) -> SwiftSpinner {
+    open class func show(_ progress: Double, title: String) -> SwiftSpinner {
         let spinner = SwiftSpinner.show(title, animated: false)
         spinner.outerCircle.strokeEnd = CGFloat(progress)
         return spinner
@@ -211,8 +211,8 @@ public class SwiftSpinner: UIView {
     //
     // Hide the spinner
     //
-    public static var hideCancelsScheduledSpinners = true
-    public class func hide(_ completion: (() -> Void)? = nil) {
+    open static var hideCancelsScheduledSpinners = true
+    open class func hide(_ completion: (() -> Void)? = nil) {
         
         let spinner = SwiftSpinner.sharedInstance
         
@@ -286,7 +286,7 @@ public class SwiftSpinner: UIView {
     //
     // observe the view frame and update the subviews layout
     //
-    public override var frame: CGRect {
+    open override var frame: CGRect {
         didSet {
             if frame == CGRect.zero {
                 return
@@ -357,7 +357,7 @@ public class SwiftSpinner: UIView {
         }
     }
     
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
         if tapHandler != nil {
@@ -378,28 +378,28 @@ public class SwiftSpinner: UIView {
     // layout elements
     //
     
-    private var blurEffectStyle: UIBlurEffectStyle = .dark
-    private var blurEffect: UIBlurEffect!
-    private var blurView: UIVisualEffectView!
-    private var vibrancyView: UIVisualEffectView!
+    fileprivate var blurEffectStyle: UIBlurEffectStyle = .dark
+    fileprivate var blurEffect: UIBlurEffect!
+    fileprivate var blurView: UIVisualEffectView!
+    fileprivate var vibrancyView: UIVisualEffectView!
     
     var defaultTitleFont = UIFont(name: "HelveticaNeue", size: 22.0)!
     let frameSize = CGSize(width: 200.0, height: 200.0)
     
-    private lazy var outerCircleView = UIView()
-    private lazy var innerCircleView = UIView()
+    fileprivate lazy var outerCircleView = UIView()
+    fileprivate lazy var innerCircleView = UIView()
     
-    private let outerCircle = CAShapeLayer()
-    private let innerCircle = CAShapeLayer()
+    fileprivate let outerCircle = CAShapeLayer()
+    fileprivate let innerCircle = CAShapeLayer()
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("Not coder compliant")
     }
     
-    private var currentOuterRotation: CGFloat = 0.0
-    private var currentInnerRotation: CGFloat = 0.1
+    fileprivate var currentOuterRotation: CGFloat = 0.0
+    fileprivate var currentInnerRotation: CGFloat = 0.1
     
-    private func spinOuter() {
+    fileprivate func spinOuter() {
         
         if superview == nil {
             return
@@ -422,7 +422,7 @@ public class SwiftSpinner: UIView {
         })
     }
     
-    private func spinInner() {
+    fileprivate func spinInner() {
         if superview == nil {
             return
         }
@@ -456,13 +456,13 @@ public class SwiftSpinner: UIView {
         }
     }
     
-    override public func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         updateFrame()
     }
     
     // MARK: - Tap handler
-    private var tapHandler: (()->())?
+    fileprivate var tapHandler: (()->())?
     func didTapSpinner() {
         tapHandler?()
     }
